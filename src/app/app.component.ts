@@ -1,3 +1,4 @@
+import { TodolistService, TodoItem } from './todolist.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'l3m-tpX-todolist-angular-y2022';
+  todoList: TodolistService;
+  constructor(public todoListS: TodolistService){
+    this.todoList=todoListS;
+  }
+
+
 }
