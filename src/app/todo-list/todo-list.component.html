@@ -1,0 +1,52 @@
+<div *ngIf="todolistObs | async as tdl">
+
+    <section class="todoapp" *ngIf="todolistObs | async as tdl">
+
+        <header class="header">
+            <h1>{{this.tdl.label}}</h1>
+            <form (submit)="create(lab.value); lab.value = ''">
+                <input name="newTodoInput" class="new-todo" placeholder="Que faire?" autofocus #lab/>
+            </form>
+        </header>
+
+        <section class="main">
+
+            <input class="toggle-all" type="checkbox" name="toggleAll" />
+            <label for="toggleAll" *ngIf="!allDone(this.tdl.items)" (click)="marqueAll(this.tdl.items) ">Mark all as complete</label>
+            <label for="toggleAll" *ngIf="allDone(this.tdl.items)" (click)="demarqueAll(this.tdl.items)">Mark all as complete</label>
+            <ul class=" todo-list ">
+                <li *ngFor="let item of tdl.items.filter(this.f);trackByItem ">
+                    <app-todo-item [data]="item " (update)="this.update($event,item) " (delete)="this.delete($event) "></app-todo-item>
+                </li>
+            </ul>
+
+        </section>
+        <footer class="footer " *ngIf="compte(this.tdl.items)> 0">
+
+            <span class="todo-count"><strong></strong>{{compteNonFini(this.tdl.items)}} restantes</span>
+            <ul class="filters">
+                <li>
+                    <a class="Allfilter" [class.selected]="this.f === all" (click)="this.f = all">Tous</a>
+                </li>
+                <li>
+                    <a class="filterActives" [class.selected]="this.f === actif" (click)="this.f = actif">Actifs</a>
+                </li>
+                <li>
+                    <a class="filterCompleted" [class.selected]="this.f === completed" (click)="this.f = completed">Complétés</a>
+                </li>
+            </ul>
+            <button class="clear-completed" (click)="supprimeCoche(listeDone(this.tdl.items))">Supprimer cochées</button>
+
+        </footer>
+
+
+
+
+
+
+    </section>
+    <button *ngIf="this.compareListe" (click)="addFirestore(inputAuth, tdl)"><img  class="save" src="../assets/img/disquetteRouge.png"></button>
+    <img *ngIf="!this.compareListe" class="save" src="../assets/img/disquetteVerte.png">
+    <p *ngIf="this.compareListe" class="sauvegarde">SAVE</p>
+    <p *ngIf="!this.compareListe" class="sauvegarde2">A JOUR</p>
+</div>

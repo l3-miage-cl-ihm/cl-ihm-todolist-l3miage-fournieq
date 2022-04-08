@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, reduce } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 export interface TodoItem {
   readonly label: string;
@@ -21,8 +22,12 @@ export class TodolistService {
   private subj = new BehaviorSubject<TodoList>({label: 'L3 MIAGE', items: [] });
   readonly observable = this.subj.asObservable();
 
-  constructor() {
+  constructor( ) {
   }
+
+
+
+
 
   create(...labels: readonly string[]): this {
     const L: TodoList = this.subj.value;
@@ -35,6 +40,7 @@ export class TodolistService {
           )
       ]
     } );
+
     return this;
   }
 
@@ -59,5 +65,33 @@ export class TodolistService {
     }
     return this;
   }
+
+  compteNonFini(l: readonly TodoItem[]): number {
+    return l.filter(l => !l.isDone).length
+  }
+
+  compte(l: readonly TodoItem[]): number {
+    return l.length
+  }
+
+  listeDone(l: readonly TodoItem[]){
+    return l.filter(l => l.isDone)
+  }
+
+  allDone(l: readonly TodoItem[]):boolean{
+    let bool:boolean = true
+    l.map(x => {
+      if (!x.isDone){
+        bool = false;
+      }
+    })
+    return bool
+
+  }
+
+  importe(tdl:TodoList){
+    this.subj.next(tdl);
+  }
+
 
 }

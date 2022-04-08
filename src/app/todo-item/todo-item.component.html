@@ -1,0 +1,13 @@
+<div class="view">
+    <input class="toggle" type="checkbox" name="done" [ngModel]="data.isDone" (ngModelChange)="toggle({isDone : $event})" />
+    <label *ngIf="!data.isDone" class="texte">
+      {{data.label}}
+  </label>
+    <label *ngIf="data.isDone" class="barre">
+    {{data.label}}
+</label>
+    <button class="destroy" (click)="this.supprime()"></button>
+</div>
+<form>
+    <input #newTextInput name="newTextInput" class="edit" />
+</form>

@@ -1,12 +1,17 @@
-<h1>TP TodoList</h1>
-<form (submit)="this.todoList.create(entree.value)">
-    <label>"Nouvelle entrée"</label>
-    <input type="text" #entree>
-</form>
-<ul *ngIf="this.todoList.observable |async as todo">
-    <li *ngFor="let item of todo.items">
-        <input type="checkbox" [ngModel]="item.isDone" (ngModelChange)="todoList.update({isDone:$event}, item)">
-        <input type="text" [ngModel]="item.label" (ngModelChange)="todoList.update({label:$event}, item)">
-        <input type="button" (click)="todoList.delete(item)">
-    </li>
-</ul>
+<div id="bandeauTitre">
+    <div *ngIf="auth.user | async as user; else showLogin">
+        <p class="texteConnexion1">{{ user.displayName }}</p>
+        <p class="texteConnexion2">{{ user.email }}</p>
+
+        <button (click)="logout()"><img class="imageProfil" [src]="user.photoURL"></button>
+    </div>
+    <ng-template #showLogin>
+        <button (click)="login()">
+          <img class="imgGoogleLogo" src="../assets/img/GoogleLogo3.png">
+          <p class="texteConnexion3">NON CONNECTÉ</p>
+        </button>
+    </ng-template>
+
+</div>
+
+<app-todo-list *ngIf="auth.user | async as user" [inputAuth]="user.displayName" [compareListe]="compareListe()"></app-todo-list>
